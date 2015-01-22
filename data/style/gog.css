@@ -1,0 +1,120 @@
+/* PCGW BUTTONS */
+.pcgw-buttons-container {
+	display: flex;
+	flex-flow: row wrap;
+	width: calc(100% + 10px);
+	margin: 40px -5px 0;
+}
+
+.pcgw-buttons-container > a {
+	display: flex;
+	flex: 1 1 calc(50% - 10px);
+	justify-content: space-around;
+	align-items: flex-start;
+	margin: 5px;
+	width: calc(50% - 10px);
+}
+
+.pcgw-button {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0 10px;
+	line-height: 30px;
+	font-size: 11px;
+	font-weight: 600;
+	color: #4C4C4C;
+	text-align: center;
+	text-transform: uppercase;
+	background: none repeat scroll 0% 0% #E1E1E1;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
+
+.pcgw-button:hover {
+	background-color: #e5e5e5;
+}
+
+.pcgw-button > .ic {
+	transform: translate(-5px, 4px);
+}
+
+/* FEATURES IN HEADER */
+.pcgw-features {
+	width: 100%;
+	margin-top: -10px;
+}
+
+.pcgw-features p {
+	display: inline-block;
+	font-size: 13px;
+	padding-right: 5px;
+	transform: translateY(-3px);
+}
+
+.pcgw-features-icon {
+	padding: 0 2px;
+	display: inline;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+}
+
+.pcgw-features-tooltip {
+	display: inline-block;
+	color: #333;
+	cursor: default;
+	background-color: #fff;
+	font-size: 13px;
+	font-weight: 300;
+	transition: opacity 300ms ease, transform 300ms ease, visibility 300ms ease;
+	height: 20px;
+	padding: 5px;
+	transform: translateY(-8px);
+	text-align: center;
+	opacity: 0;
+	visibility: hidden;
+	width: 175px;
+	z-index: 999;
+	position: absolute;
+	margin-top: 40px;
+	margin-left: -101px;
+	box-shadow: 0 2px 5px 2px rgba(0,0,0,0.2);
+}
+
+.pcgw-features-tooltip::before {
+	content: '';
+	position: absolute;
+	display: block;
+	margin-top: -10px;
+	margin-left: 84px;
+	border-width: 0 5px 5px;
+	border-style: solid;
+	border-color: #fff transparent;
+	transition: opacity 300ms ease;
+}
+
+.pcgw-features-icon:hover > .pcgw-features-tooltip {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+	transition: opacity 300ms ease, transform 300ms ease, visibility 200ms ease;
+}
+
+
+.pcgw-support-container-main {
+	width: 234px;
+	border: 1px solid #c9c9c9;
+	background-color: #d0d0d0;
+	border-bottom: 0;
+	border-top: 1px solid #d0d0d0;
+	position: relative;
+}
+
+.pcgw-support-icon {
+	position: absolute;
+	width: 19px;
+	height: 19px;
+	overflow: hidden;
+	top: 2px;
+	left: 6px;
+}
