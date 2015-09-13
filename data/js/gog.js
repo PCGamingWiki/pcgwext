@@ -13,9 +13,9 @@ function getPageName(url) {
 function getPageTitle() {
 	/* Get page title for our "API"
 	 */
-	var title = document.getElementsByTagName("title")[0].innerHTML.replace(" ● GOG.com", "");
+	var title = $("meta[name='og:title']").attr("content");
 	console.log("Page title: " + title);
-	return title;
+	return title.trim();
 }
 
 function getStoreData(name, title) {
