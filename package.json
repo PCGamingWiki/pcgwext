@@ -5,14 +5,14 @@
 	"description": "Quick links to PCGamingWiki",
 	"author": "PCGamingWiki Team",
 	"license": "GPL 2.0",
-	"version": "1.0.2",
+	"version": "1.0.3",
 
 	"icon": "data/icons/icon.png",
 	"icon64": "data/icons/icon64.png",
 
 	"permissions": {
 		"cross-domain-content": [
-			"http://pcgamingwiki.com/"
+			"https://pcgamingwiki.com/"
 		]
 	}
 }

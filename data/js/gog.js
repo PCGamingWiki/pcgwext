@@ -1,7 +1,7 @@
 function getPageName(url) {
 	/* Extract page title from URL
 	 */
-	if (url && url.match(/^\/(game|forum|support)\/([A-Za-z0-9\-\_]+)/)) {
+	if (url && url.match(/^\/(game|forum)\/([A-Za-z0-9\-\_]+)/)) {
 		console.log("Page name: " + RegExp.$2);
 		return RegExp.$2;
 	}
@@ -22,11 +22,11 @@ function getStoreData(name, title) {
 	/* Get data for store pages and pass it on
 	 */
 	$.ajax({
-		'url': 'http://pcgamingwiki.com/w/api.php',
+		'url': 'https://pcgamingwiki.com/w/api.php',
 		'data': {
 			'action': 'askargs',
 			'conditions': 'GOGcom page::' + name,
-			'printouts': 'GOGcom forum|Wikipedia|Controller support|Full controller support|Windowed|Surround sound|Subtitles|Closed captions|Key remapping|Widescreen resolution',
+			'printouts': 'GOGcom forum|GOGcom support page|Wikipedia|Controller support level|Windowed|Surround sound|Subtitles|Closed captions|Key remapping|Widescreen resolution',
 			'format': 'json'
 		},
 		'success': function(json) {
@@ -51,7 +51,7 @@ function getForumData(name) {
 	/* Get data for forums and pass it on
 	 */
 	$.ajax({
-		'url': 'http://pcgamingwiki.com/w/api.php',
+		'url': 'https://pcgamingwiki.com/w/api.php',
 		'data': {
 			'action': 'askargs',
 			'conditions': 'GOGcom forum::' + name,
@@ -77,7 +77,7 @@ function getSupportData(name) {
 	/* Get data for forums and pass it on
 	 */
 	$.ajax({
-		'url': 'http://pcgamingwiki.com/w/api.php',
+		'url': 'https://pcgamingwiki.com/w/api.php',
 		'data': {
 			'action': 'askargs',
 			'conditions': 'GOGcom page::' + name,
@@ -89,7 +89,6 @@ function getSupportData(name) {
 			var count = countData(json);
 			if (count > 0) {
 				var parsed = parseData(json);
-				modifySupportPage(name, count, parsed);
 			}
 			else {
 				console.log("No data to parse, nothing to do");
@@ -122,6 +121,7 @@ function parseData(data) {
 	info.url = data["query"]["results"][game]["fullurl"];
 	info.forum = data["query"]["results"][game]["printouts"]["GOGcom forum"];
 	info.store = data["query"]["results"][game]["printouts"]["GOGcom page"];
+	info.support = data["query"]["results"][game]["printouts"]["GOGcom support page"];
 	info.wp = data["query"]["results"][game]["printouts"]["Wikipedia"];
 	info.wide = data["query"]["results"][game]["printouts"]["Widescreen resolution"];
 	info.wind = data["query"]["results"][game]["printouts"]["Windowed"];
@@ -136,13 +136,11 @@ function parseData(data) {
 	else {
 		info.subs = "";
 	}
-	if (data["query"]["results"][game]["printouts"]["Controller support"] == "true") {
-		if (data["query"]["results"][game]["printouts"]["Full controller support"] == "true") {
-			info.cont = "full";
-		}
-		else {
-			info.cont = "partial";
-		}
+	if (data["query"]["results"][game]["printouts"]["Controller support level"] == "full") {
+		info.cont = "full";
+	}
+	else if (data["query"]["results"][game]["printouts"]["Controller support level"] == "partial") {
+		info.cont = "partial";
 	}
 	else {
 		info.cont = "";
@@ -174,14 +172,14 @@ function modifyStorePage(page, title, count, data) {
 		}
 
 		console.log("Adding link to GOG.com support page: " + page);
-		bigAppend = bigAppend + '<a href="http://www.gog.com/support/' + page + '"><div class="pcgw-button">Support</div></a>';
+		bigAppend = bigAppend + '<a href="https://support.gog.com/hc//categories/201400969?game=' + data.support + '"><div class="pcgw-button">Support</div></a>';
 
 		$('.group-2:first').append('<div class="pcgw-buttons-container">' + bigAppend + '</div>');
 	}
 	else if (count > 1) {
 		console.log("Multiple PCGW pages. Simpler links");
 
-		var bigAppend = '<a href="http://pcgamingwiki.com/api/gog.php?page=' + page +'"><div class="pcgw-button"><img class="ic" src="' + icon_pcgw_blue + '"/>PCGamingWiki</div></a>';
+		var bigAppend = '<a href="https://pcgamingwiki.com/api/gog.php?page=' + page +'"><div class="pcgw-button"><img class="ic" src="' + icon_pcgw_blue + '"/>PCGamingWiki</div></a>';
 		
 		if (data.forum !== "") {
 			console.log("Adding link to GOG.com forums (first resutl): " + data.forum);
@@ -189,13 +187,13 @@ function modifyStorePage(page, title, count, data) {
 		}
 		
 		console.log("Adding link to GOG.com support page: " + page);
-		bigAppend = bigAppend + '<a href="http://www.gog.com/support/' + page + '"><div class="pcgw-button">Support</div></a>';
+		bigAppend = bigAppend + '<a href="https://support.gog.com/hc//categories/201400969?game=' + data.support + '"><div class="pcgw-button">Support</div></a>';
 
 		$('.group-2:first').append('<div class="pcgw-buttons-container">' + bigAppend + '</div>');
 	}
 	else if (count === 0) {
 		console.log("No PCGW page. Adding fake link");
-		$('.group-2:first').append('<div class="pcgw-buttons-container"><a href="http://pcgamingwiki.com/api/gog.php?page=' + page + '&title=' + title +'"><div class="pcgw-button"><img class="ic" style="transform: translate(-5px, 3px);" src="' + icon_pcgw_blue + '"/>PCGamingWiki</div></a><a href="http://www.gog.com/support/' + page + '"><div class="pcgw-button">Support</div></a></div>');
+		$('.group-2:first').append('<div class="pcgw-buttons-container"><a href="https://pcgamingwiki.com/api/gog.php?page=' + page + '&title=' + title +'"><div class="pcgw-button"><img class="ic" style="transform: translate(-5px, 3px);" src="' + icon_pcgw_blue + '"/>PCGamingWiki</div></a><a href="https://support.gog.com/hc//categories/201400969?game=' + data.support + '"><div class="pcgw-button">Support</div></a></div>');
 	}
 
 	if (count === 1) {
@@ -256,29 +254,8 @@ function modifyForumPage(page, count, data) {
 	}
 	else {
 		console.log("Adding splitting PCGW link.");
-		$('.n_b_b_nr_h').after('<div style="margin-right: 180px; position: absolute; right: 0px;" class="n_b_b_nr_h"><div class="n_b_b_nrs_h n_b_b_nr_last"><a class="n_b_b_nr" href="http://pcgamingwiki.com/api/gog.php?forum=' + page + '">PCGamingWiki</a></div></div>');
+		$('.n_b_b_nr_h').after('<div style="margin-right: 180px; position: absolute; right: 0px;" class="n_b_b_nr_h"><div class="n_b_b_nrs_h n_b_b_nr_last"><a class="n_b_b_nr" href="https://pcgamingwiki.com/api/gog.php?forum=' + page + '">PCGamingWiki</a></div></div>');
 	}
-}
-
-function modifySupportPage(page, count, data) {
-	/* Modify support page
-	 */
-	console.log("Adding store, forum and PCGW links.")
-	if (count === 1) {
-		console.log("Real PCGW link");
-		var SupAppend = '<div class="l_b_l_bg"><div class="pcgw-support-icon"><img src="' + icon_pcgw_blue + '"/></div><div class="l_b_l_text"><a class="gray_un" href="' + data.url +'">PCGamingWiki</a></div></div>';
-	}
-	else {
-		console.log("Splitting PCGW link");
-		var SupAppend = '<div class="l_b_l_bg"><div class="pcgw-support-icon"><img src="' + icon_pcgw_blue + '"/></div><div class="l_b_l_text"><a class="gray_un" href="http://pcgamingwiki.com/api/gog.php?page=' + page +'">PCGamingWiki</a></div></div>';
-	}
-
-	console.log("Adding store link");
-	SupAppend = SupAppend + '<div class="l_b_l_bg"><div class="l_b_l_text"><a class="gray_un" href="http://www.gog.com/game/' + page +'">Store page</a></div></div>';
-	console.log("Adding forum link");
-	SupAppend = SupAppend + '<div class="l_b_l_bg"><div class="l_b_l_text"><a class="gray_un" href="http://www.gog.com/forum/' + data.forum +'">Community</a></div></div>';
-
-	$('.light_box_h:last').after('<div class="light_box_h"><div class="light_box_top_h"><div class="light_box_top"></div></div><div class="pcgw-support-container-main">' + SupAppend + '</div><div class="light_box_bottom_h"><div class="light_box_bottom"></div></div></div>')
 }
 
 function start() {

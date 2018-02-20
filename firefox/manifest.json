@@ -5,10 +5,16 @@
 	"short_name": "PCGamingWiki",
 	"description": "Quick links to PCGamingWiki",
 	"author": "PCGamingWiki Team",
-	"version": "1.0.2",
+	"version": "1.0.3",
+
+	"applications": {
+		"gecko": {
+		"id": "jid1-2Q04RuwSVCZbdg@pcgamingwiki.com"
+		}
+	},
 
 	"permissions": [
-		"http://pcgamingwiki.com/"
+		"https://pcgamingwiki.com/"
 	],
 
 	"background": {
@@ -18,7 +24,7 @@
 
 	"content_scripts": [
 		{
-			"matches": ["http://www.gog.com/*"],
+			"matches": ["https://www.gog.com/*"],
 			"css": ["data/style/gog.css"],
 			"js": ["data/js/jQuery.min.js", "data/js/gog.js", "data/chrome.js"],
 			"run_at": "document_end"
